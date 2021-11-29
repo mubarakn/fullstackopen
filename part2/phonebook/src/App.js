@@ -8,6 +8,13 @@ const App = () => {
 
   const handleFormSubmit = e => {
     e.preventDefault()
+
+    const person = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
+    if(person) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     setPersons([...persons, { name: newName}])
     setNewName('')
   }
