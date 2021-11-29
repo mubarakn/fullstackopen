@@ -1,5 +1,34 @@
 import React, { useState } from 'react'
 
+const Filter = ({ query, onQueryChange }) => {
+  return (
+    <div>
+      filter shown with <input type="text" value={query} onChange={onQueryChange} />
+    </div>
+  )
+}
+
+const PersonForm = ({ handleFormSubmit, name, number, onNameChanged, onNumberChanged }) => {
+  return (
+      <form onSubmit={handleFormSubmit}>
+        <div>
+          name: <input value={name} onChange={onNameChanged} />
+        </div>
+        <div>
+          number: <input value={number} onChange={onNumberChanged} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+  )
+}
+
+const Persons = ({ persons, query }) => {
+  const filteredPersons = persons.filter(p => p.name.toLowerCase().includes(query.toLowerCase()))
+  return filteredPersons.length ? filteredPersons.map(person => <div key={person.id}>{person.name} {person.number}</div>) : <div>no results</div>
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -36,30 +65,14 @@ const App = () => {
     setNewNumber('')
   }
 
-  const filteredPersons = persons.filter(p => p.name.toLowerCase().includes(query.toLowerCase()))
-
   return (
     <div>
       <h2>Phonebook</h2>
-
-      <div>
-        filter shown with <input type="text" value={query} onChange={e => setQuery(e.target.value)} />
-      </div>
-
-      <h2>add a new</h2>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          name: <input value={newName} onChange={e => setNewName(e.target.value)} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={e => setNewNumber(e.target.value)} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter query={query} onQueryChange={e => setQuery(e.target.value)} />
+      <h3>add a new</h3>
+      <PersonForm handleFormSubmit={handleFormSubmit} name={newName} onNameChanged={e => setNewName(e.target.value)} number={newNumber} onNumberChanged={e => setNewNumber(e.target.value)} />
       <h2>Numbers</h2>
-      {filteredPersons.length ? filteredPersons.map(person => <div key={person.id}>{person.name} {person.number}</div>) : <div>no results</div>}
+      <Persons persons={persons} query={query} />
     </div>
   )
 }
