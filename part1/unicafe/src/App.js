@@ -28,11 +28,15 @@ const App = () => {
 
       <div>
         <h2>statistics</h2>
-        <div>good {good}</div>
-        <div>neutral {neutral}</div>
-        <div>bad {bad}</div>
-        <div>all {good + neutral + bad}</div>
-        <Statistics good={good} neutral={neutral} bad={bad} />
+        {(good || neutral || bad) ? (
+          <>
+            <div>good {good}</div>
+            <div>neutral {neutral}</div>
+            <div>bad {bad}</div>
+            <div>all {good + neutral + bad}</div>
+            <Statistics good={good} neutral={neutral} bad={bad} />
+          </>
+          ) : <span>No feedback given</span>}
       </div>
     </div>
   );
