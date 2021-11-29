@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 
+const averageScores = { good: 1, neutral: 0, bad: -1 }
 function App() {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -21,7 +22,8 @@ function App() {
         <div>neutral {neutral}</div>
         <div>bad {bad}</div>
         <div>all {good + neutral + bad}</div>
-        
+        <div>average {( good * averageScores.good + neutral * averageScores.neutral + bad * averageScores.bad ) / (good + neutral + bad)}</div>
+        <div>positive {good / (good + neutral + bad) * 100}%</div>
       </div>
     </div>
   );
