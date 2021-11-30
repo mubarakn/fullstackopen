@@ -1,18 +1,10 @@
-import { useEffect, useState } from "react"
 import axios from "axios"
-
-const Country = ({ country }) => {
-  const [expanded, toggleExpanded] = useState(false)
-
-  if(!expanded) {
-    return <div>{country.name.common} <button onClick={() => toggleExpanded(true)}>show</button></div>
-  }
-
-
-}
+import { useEffect, useState } from "react"
+import Countries from "./Countries"
 
 function App() {
   const [countries, setCountries] = useState([])
+  const [filteredCountries, setFilteredCountries] = useState([])
   const [query, setQuery] = useState('')
 
   useEffect(() => {
@@ -23,9 +15,22 @@ function App() {
       })
   }, [])
 
+  useEffect(() => {
+    if(countries.length) {
+      setFilteredCountries(countries.filter(country => country.name.common.toLowerCase().includes(query)))
+    }
+  }, [countries, query])
+
+  const handleQueryChange = e => {
+    const { value } = e.target
+    setQuery(value.toLowerCase())
+    
+  }
+
   return (
     <div>
-      <div>find countries <input type="text" value={query} onChange={e => setQuery(e.target.value)} /></div>
+      <div>find countries <input type="text" value={query} onChange={handleQueryChange} /></div>
+      {!query ? '' : <Countries countries={filteredCountries} />}
     </div>
   )
 }
