@@ -2,14 +2,22 @@ import React, { useState } from "react"
 
 const averageScores = { good: 1, neutral: 0, bad: -1 }
 
+const StatisticLine = ({ text, value }) => <tr><td>{text}</td><td>{value}</td></tr>
 const Statistics = ({ good, neutral, bad}) => {
   return (
-    <>
-      <div>average {( good * averageScores.good + neutral * averageScores.neutral + bad * averageScores.bad ) / (good + neutral + bad)}</div>
-      <div>positive {good / (good + neutral + bad) * 100}%</div>
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={good + neutral + bad} />
+        <StatisticLine text="average" value={( good * averageScores.good + neutral * averageScores.neutral + bad * averageScores.bad ) / (good + neutral + bad)} />
+        <StatisticLine text="positive" value={`${good / (good + neutral + bad) * 100}%`} />
+      </tbody>
+    </table>
   )
 }
+const Button = ({ text, onClick }) => <button onClick={onClick}>{text}</button>
 
 const App = () => {
   const [good, setGood] = useState(0)
@@ -21,22 +29,14 @@ const App = () => {
       <h1>give feedback</h1>
 
       <div>
-        <button onClick={() => setGood(good + 1)}>good</button>
-        <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-        <button onClick={() => setBad(bad + 1)}>bad</button>
+        <Button onClick={() => setGood(good + 1)} text="good" />
+        <Button onClick={() => setNeutral(neutral + 1)} text="neutral" />
+        <Button onClick={() => setBad(bad + 1)} text="bad" />
       </div>
 
       <div>
         <h2>statistics</h2>
-        {(good || neutral || bad) ? (
-          <>
-            <div>good {good}</div>
-            <div>neutral {neutral}</div>
-            <div>bad {bad}</div>
-            <div>all {good + neutral + bad}</div>
-            <Statistics good={good} neutral={neutral} bad={bad} />
-          </>
-          ) : <span>No feedback given</span>}
+        {(good || neutral || bad) ? <Statistics good={good} neutral={neutral} bad={bad} /> : <span>No feedback given</span>}
       </div>
     </div>
   );
