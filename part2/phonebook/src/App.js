@@ -94,6 +94,10 @@ const App = () => {
       setPersons([...persons, response.data])
       setTimeout(() => { setInfoMessage(null) }, 5000)
     })
+    .catch(error => {
+      console.log('error', error.response.error)
+      setErrorMessage(error.response.data.error)
+    })
     setNewName('')
     setNewNumber('')
   }

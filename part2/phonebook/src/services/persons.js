@@ -9,4 +9,5 @@ const update = (id, person) => axios.put(`${baseUrl}/${id}`, person)
 
 const remove = id => axios.delete(`${baseUrl}/${id}`)
 
-export default { getAll, create, update, remove }
+const output = { getAll, create, update, remove }
+export default output
